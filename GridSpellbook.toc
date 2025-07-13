@@ -1,0 +1,6 @@
+## Interface: 7200
+## Title: Grid Spellbook
+## Notes: Shows more spells per spellbook page
+## Version: 1.0.0
+
+GridSpellbook.lua
