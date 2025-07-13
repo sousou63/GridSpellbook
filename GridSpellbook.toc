@@ -1,4 +1,4 @@
-## Interface: 7200
+## Interface: 11200
 ## Title: Grid Spellbook
 ## Notes: Shows more spells per spellbook page
 ## Version: 1.0.0
