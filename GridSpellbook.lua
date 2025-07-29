@@ -54,7 +54,7 @@ local function SetupGrid()
                 PuntOffScreen(getglobal("SpellButton" .. i .. "SpellName"));
                 PuntOffScreen(getglobal("SpellButton" .. i .. "SubSpellName"));
                 MakeRankString(i);
-                MakeSpellNameString(i); -- Ajouter le nom du sort
+                MakeSpellNameString(i);
                 if i == 1 then
                     -- Leave first button in place
                 elseif row == 1 and column == 1 then
@@ -90,6 +90,7 @@ function SpellButton_UpdateButton()
     end
 
     local subSpellName = subSpellString:GetText();
+
     if subSpellName ~= nil and string.find(subSpellName, "Rank ") ~= nil then
         rankString:SetText(string.sub(subSpellName, 6));
         rankString:Show();
