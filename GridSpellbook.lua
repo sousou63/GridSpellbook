@@ -1,11 +1,13 @@
 local X_OFFSET = 50;
 local Y_OFFSET = -14;
+
 local function MakeSpellButton(i)
     local name = "SpellButton" .. i;
     local button = CreateFrame("CheckButton", name, SpellBookFrame, "SpellButtonTemplate");
     button:SetID(i);
     return button
 end
+
 local function GetSpellButton(i)
     local button = getglobal("SpellButton" .. i);
     if button == nil then
@@ -13,6 +15,7 @@ local function GetSpellButton(i)
     end
     return button;
 end
+
 local function MakeRankString(i)
     local button = getglobal("SpellButton" .. i);
     local rankString = button:CreateFontString("SpellButton" .. i .. "RankText", "ARTWORK");
@@ -22,6 +25,7 @@ local function MakeRankString(i)
     rankString:SetWidth(36);
     rankString:SetHeight(10);
 end
+
 local function MakeSpellNameString(i)
     local button = getglobal("SpellButton" .. i);
     local spellNameString = button:CreateFontString("SpellButton" .. i .. "SpellNameText", "ARTWORK");
@@ -32,10 +36,12 @@ local function MakeSpellNameString(i)
     spellNameString:SetHeight(16);
     spellNameString:SetNonSpaceWrap(true); -- Auto Wrap, not perfect but get the job done
 end
+
 local function PuntOffScreen(widget)
     -- Hide() and SetAlpha(0) were insufficient, so...
     widget:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 0, 5000);
 end
+
 local function SetupGrid()
     -- Player spell list assumes 2 columns for putting similar spells in the same column
     --    e.g. at indices 1, 3, 5
@@ -48,7 +54,7 @@ local function SetupGrid()
                 PuntOffScreen(getglobal("SpellButton" .. i .. "SpellName"));
                 PuntOffScreen(getglobal("SpellButton" .. i .. "SubSpellName"));
                 MakeRankString(i);
-                MakeSpellNameString(i);
+                MakeSpellNameString(i); -- Ajouter le nom du sort
                 if i == 1 then
                     -- Leave first button in place
                 elseif row == 1 and column == 1 then
@@ -64,6 +70,7 @@ local function SetupGrid()
     end
     SPELLS_PER_PAGE = i - 1; -- Update for SpellBookFrame.lua
 end
+
 -- Hook to update rank text
 local Original_SpellButton_UpdateButton = SpellButton_UpdateButton;
 function SpellButton_UpdateButton()
@@ -81,7 +88,7 @@ function SpellButton_UpdateButton()
         spellNameString:Hide();
         return;
     end
-    
+
     local subSpellName = subSpellString:GetText();
     if subSpellName ~= nil and string.find(subSpellName, "Rank ") ~= nil then
         rankString:SetText(string.sub(subSpellName, 6));
@@ -89,7 +96,7 @@ function SpellButton_UpdateButton()
     else
         rankString:Hide();
     end
-    
+
     local id = SpellBook_GetSpellID(this:GetID());
     local spellName, _ = GetSpellName(id, SpellBookFrame.bookType);
     if spellName and spellNameString then
@@ -104,6 +111,7 @@ function SpellButton_UpdateButton()
         spellNameString:Hide();
     end
 end
+
 -- Hook tooltip to add now-hidden subSpellName line
 local Original_SpellButton_OnEnter = SpellButton_OnEnter;
 function SpellButton_OnEnter()
@@ -115,4 +123,5 @@ function SpellButton_OnEnter()
     GameTooltipTextRight1:Show();
     GameTooltip:Show(); -- Needed to update the tooltip's size
 end
+
 SetupGrid();
